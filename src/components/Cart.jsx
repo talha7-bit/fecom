@@ -4,13 +4,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Cart = () => {
+  const URL=import.meta.env.VITE_API_URL;
   const queryClient = useQueryClient();
 
   const { data: cartItems, isLoading, isError, error } = useQuery({
     queryKey: ["cart"],
     queryFn: async () => {
       const response = await axios.get(
-        "http://localhost:3000/api/user/getallorders",
+        `${URL}/api/user/getallorders`,
         { withCredentials: true }
       );
       return response.data.data;
@@ -21,11 +22,10 @@ const Cart = () => {
   const {data:totalbalance}=useQuery({
     queryKey:["totalbalance"],
     queryFn:async()=>{
-        const response=await axios.get("http://localhost:3000/api/user/fetchtotalpayment",{withCredentials:true});
+        const response=await axios.get(`${URL}/api/user/fetchtotalpayment`,{withCredentials:true});
         return response.data.data;
     }
   })
-  const URL=import.meta.env.VITE_API_URL;
   const { mutate: removeItem, isLoading: removing } = useMutation({
     mutationFn: async (id) => {
       const response = await axios.post(
